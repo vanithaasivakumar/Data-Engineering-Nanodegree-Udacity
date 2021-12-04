@@ -1,7 +1,7 @@
 # DROP TABLES
 
 songplay_table_drop = "DROP TABLE songsplay"
-user_table_drop = "DROP TABLE user"
+user_table_drop = "DROP TABLE users"
 song_table_drop = "DROP TABLE song"
 artist_table_drop = "DROP TABLE artist"
 time_table_drop = "DROP TABLE time"
@@ -18,13 +18,13 @@ songplay_table_create = ("""CREATE TABLE songplay(
     ,session_id INT
     ,location VARCHAR(255)
     ,user_agent VARCHAR(255)
-    FOREIGN KEY(star_time REFERENCES time(start_time))
-    FOREIGN KEY(user_id REFERENCES user(user_id))
-    FOREIGN KEY(song_id REFERENCES song(song_id))
-    FOREIGN KEY(artist_id REFERENCES artist(artist_id))
+    ,FOREIGN KEY(start_time) REFERENCES time(start_time)
+    ,FOREIGN KEY(user_id) REFERENCES users(user_id)
+    ,FOREIGN KEY(song_id) REFERENCES song(song_id)
+    ,FOREIGN KEY(artist_id) REFERENCES artist(artist_id))
 """)
 
-user_table_create = ("""CREATE TABLE user(
+user_table_create = ("""CREATE TABLE users(
     user_id INT PRIMARY KEY
     ,first_name VARCHAR(100)
     ,last_name VARCHAR(100)
@@ -46,11 +46,11 @@ song_table_create = ("""CREATE TABLE song(
     ,artist_id INT
     ,year INT
     ,duration NUMERIC
-    FOREIGNKEY(artist_id) REFERENCES artist(artist_id))
+    ,FOREIGN KEY(artist_id) REFERENCES artist(artist_id))
 """)
 
 time_table_create = ("""CREATE TABLE time(
-    start_time TIMESTAMP
+    start_time TIMESTAMP UNIQUE
     ,hour INT
     ,day INT
     ,week INT
@@ -84,5 +84,5 @@ song_select = ("""
 
 # QUERY LISTS
 
-create_table_queries = [songplay_table_create, user_table_create, artist_table_create, song_table_create, time_table_create]
+create_table_queries = [time_table_create,artist_table_create,song_table_create,user_table_create,songplay_table_create   ]
 drop_table_queries = [songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
